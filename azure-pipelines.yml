@@ -29,7 +29,7 @@ jobs:
   #KEY VAULT TASK
   - task: AzureKeyVault@1
     inputs:
-      azureSubscription: 'PROJECT-5058-RG'
+      azureSubscription: 'PROJECT-5058'
       KeyVaultName: 'project-keyvault-5058'
       SecretsFilter: 'sp-client-id-tf-5058,sp-password-tf-5058,sp-tenant-id-tf-5058,sp-subscription-id-tf-5058,ak-backend-sa-5058'
     displayName: 'Get key vault secrets'
