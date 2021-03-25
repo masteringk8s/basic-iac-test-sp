@@ -1,0 +1,59 @@
+variables:
+- name: DECODE_PERCENTS
+  value: false
+
+trigger: none
+pr: none
+
+jobs:
+- job: iac
+  timeoutInMinutes: 0
+  variables:
+    TF_STORAGE_ACCT_NAME: tfstate5058sa
+    TF_STORAGE_CONT_NAME: tfstate
+    TF_STATE_FILE: terraform.tfstate 
+  #pool: ado-vm-peer
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  #Setup Custom Variables for pipeline
+  - script: |
+      GIT_COMMIT=$( git rev-parse --short HEAD )
+      NOW=$(date +'%m%d%Y-%H%M%S')
+      echo "##vso[task.setvariable variable=commitHash;isOutput=true]$GIT_COMMIT"
+      echo "##vso[task.setvariable variable=now;isOutput=true]$NOW"
+    name: runtime_vars
+    displayName: 'Set runtime variables for pipeline'
+
+  #KEY VAULT TASK
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'PROJECT-5058-RG'
+      KeyVaultName: 'project-keyvault-5058'
+      SecretsFilter: 'sp-client-id-tf-5058,sp-password-tf-5058,sp-tenant-id-tf-5058,sp-subscription-id-tf-5058,ak-backend-sa-5058'
+    displayName: 'Get key vault secrets'
+
+  # TERRAFORM VERSION
+  - script: |
+      terraform version
+    displayName: 'Get Terraform Version'
+
+  # AZ LOGIN USING TERRAFORM SERVICE PRINCIPAL
+  - script: |
+      az login --service-principal -u "$(sp-client-id-tf-5058)" -p "$(sp-password-tf-5058)" --tenant "$(sp-tenant-id-tf-5058)"
+    displayName: 'Login az cli'
+
+  - script: |
+      export ARM_CLIENT_ID=$(sp-client-id-tf-5058)
+      export ARM_CLIENT_SECRET=$(sp-password-tf-5058)
+      export ARM_SUBSCRIPTION_ID=$(sp-subscription-id-tf-5058)
+      export ARM_TENANT_ID=$(sp-tenant-id-tf-5058)
+      echo '#######Terraform Init########'
+      terraform init -backend-config="storage_account_name=$(TF_STORAGE_ACCT_NAME)" -backend-config="container_name=$(TF_STORAGE_CONT_NAME)" -backend-config="access_key=$(ak-backend-sa-0693)" -backend-config="key=$(TF_STATE_FILE)" 
+      echo '#######Terraform Plan########'
+      terraform plan -out="out.plan" 
+      echo '#######Terraform Apply########'
+      terraform apply out.plan
+    displayName: 'Terraform Init, Plan and Apply '
+
