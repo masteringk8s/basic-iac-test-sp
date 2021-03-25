@@ -20,9 +20,16 @@ data "azurerm_resource_group" "project-rg" {
     name = "PROJECT-5058-RG"
 }
 
-resource "azurerm_resource_group" "hub" {
-  name      = "TEST-RG"
-  location  = "eastus"
+# resource "azurerm_resource_group" "hub" {
+#   name      = "TEST-RG"
+#   location  = "eastus"
+# }
+
+resource "azurerm_virtual_network" "ase-vnet" {
+  name                = "vnet1"
+  location            = "eastus"
+  resource_group_name = data.azurerm_resource_group.project-rg.name
+  address_space       = ["10.0.0.0/16"]
 }
 
 
