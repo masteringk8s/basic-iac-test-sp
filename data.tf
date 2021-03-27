@@ -5,8 +5,8 @@ data "azurerm_resource_group" "project-rg" {
 }
 
 data "azurerm_virtual_network" "agent-vnet" {
-    name                = var.ado-vnet-name
-    resource_group_name = var.ado-vnet-rg
+    name                = var.agent-vnet-name
+    resource_group_name = var.agent-vnet-rg
 }
 
 data "azurerm_image" "vm-img" {
