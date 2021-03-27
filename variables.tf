@@ -3,6 +3,11 @@ variable "vmsize" {
   description               = "Size of VM to create"
 }
 
+variable "vmImage" {
+  type                      = string
+  description               = "VM image to use for Infra"
+}
+
 variable "project-rg" {
   type                      = string
   description               = "Project RG"
