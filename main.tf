@@ -152,7 +152,7 @@ resource "azurerm_user_assigned_identity" "managed_id" {
 }
 
 resource "azurerm_role_assignment" "blob_contributor" {
-  scope                 = data.azurerm_resource_group.project-sa.id 
+  scope                 = data.azurerm_resource_group.project-rg.id 
   role_definition_name  = "Storage Blob Data Contributor"
   principal_id          = azurerm_user_assigned_identity.managed_id.principal_id
 }

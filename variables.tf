@@ -23,3 +23,13 @@ variable "location" {
   default                   = "eastus"
   description               = "The Azure Region used"
 }
+
+variable "agent-vnet-rg" {
+  type                      = string
+  description               = "ADO agent vnet name"
+}
+
+variable "agent-vnet-name" {
+  type                      = string
+  description               = "ADO agent vnet name"
+}
