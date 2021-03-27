@@ -1,3 +1,8 @@
+variable "prefix" {
+  type                      = string
+  description               = "Prefix to use for Infra"
+}
+
 variable "vmsize" {
   type                      = string
   description               = "Size of VM to create"
