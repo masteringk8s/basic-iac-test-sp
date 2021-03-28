@@ -8,7 +8,7 @@ pr: none
 jobs:
 - job: iac
   timeoutInMinutes: 0
-  pool: ado-agent
+  pool: ado-vmss-agent
   #pool:
   #  vmImage: 'ubuntu-latest'
 
