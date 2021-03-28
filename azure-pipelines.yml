@@ -8,9 +8,9 @@ pr: none
 jobs:
 - job: iac
   timeoutInMinutes: 0
-  #pool: ado-vm-peer
-  pool:
-    vmImage: 'ubuntu-latest'
+  pool: ado-agent
+  #pool:
+  #  vmImage: 'ubuntu-latest'
 
   steps:
   #Setup Custom Variables for pipeline
