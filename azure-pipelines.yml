@@ -13,20 +13,11 @@ jobs:
   #  vmImage: 'ubuntu-latest'
 
   steps:
-  #Setup Custom Variables for pipeline
-  - script: |
-      GIT_COMMIT=$( git rev-parse --short HEAD )
-      NOW=$(date +'%m%d%Y-%H%M%S')
-      echo "##vso[task.setvariable variable=commitHash;isOutput=true]$GIT_COMMIT"
-      echo "##vso[task.setvariable variable=now;isOutput=true]$NOW"
-    name: runtime_vars
-    displayName: 'Set runtime variables for pipeline'
-
   #KEY VAULT TASK
   - task: AzureKeyVault@1
     inputs:
       azureSubscription: 'PROJECT-EBM-RG'
-      KeyVaultName: 'project-secrets-ebm-kv'
+      KeyVaultName: '$(AZURE_KEYVAULT_NAME)'
       SecretsFilter: 'SP-CLIENTID,SP-PASSWORD,SP-TENANTID,SP-SUBSCRIPTIONID,SA-ACCESS-KEY
     displayName: 'Get key vault secrets'
 
