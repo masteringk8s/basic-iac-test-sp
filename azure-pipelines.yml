@@ -8,7 +8,7 @@ pr: none
 jobs:
 - job: iac
   timeoutInMinutes: 0
-  pool: ado-vmss-agent
+  pool: ado-agents
   #pool:
   #  vmImage: 'ubuntu-latest'
 
@@ -16,9 +16,9 @@ jobs:
   #KEY VAULT TASK
   - task: AzureKeyVault@1
     inputs:
-      azureSubscription: 'PROJECT-EBM-RG'
+      azureSubscription: 'SERVICE-2429'
       KeyVaultName: '$(AZURE_KEYVAULT_NAME)'
-      SecretsFilter: 'SP-CLIENTID,SP-PASSWORD,SP-TENANTID,SP-SUBSCRIPTIONID,SA-ACCESS-KEY
+      SecretsFilter: 'SP-CLIENTID,SP-PASSWORD,SP-TENANTID,SP-SUBSCRIPTIONID,SA-ACCESS-KEY'
     displayName: 'Get key vault secrets'
 
   # TERRAFORM VERSION
